@@ -1,66 +1,54 @@
-import bcrypt from "bcryptjs";
-import { createClient } from "@supabase/supabase-js";
-import invariant from "tiny-invariant";
-
+import { db } from "~/db";
+import { profiles_table } from "~/db/schema";
+import { and, eq } from "drizzle-orm";
+import { v4 as uuid } from "uuid";
 export type User = { id: string; email: string };
 
-// Abstract this away
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-
-invariant(
-  supabaseUrl,
-  "SUPABASE_URL must be set in your environment variables."
-);
-invariant(
-  supabaseAnonKey,
-  "SUPABASE_ANON_KEY must be set in your environment variables."
-);
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 export async function createUser(email: string, password: string) {
-  const { user } = await supabase.auth.signUp({
-    email,
-    password,
-  });
+  const id = uuid();
+  const userData = await db
+    .insert(profiles_table)
+    .values({ id, email, password });
+  const a = userData.insertId;
+  console.log("insert id", a);
 
-  // get the user profile after created
-  const profile = await getProfileByEmail(user?.email);
-
-  return profile;
+  const newUser = await getProfileById(id);
+  return newUser!;
 }
 
 export async function getProfileById(id: string) {
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("email, id")
-    .eq("id", id)
-    .single();
+  const data = await db
+    .select({ email: profiles_table.email, id: profiles_table.id })
+    .from(profiles_table)
+    .where(eq(profiles_table.id, id));
 
-  if (error) return null;
-  if (data) return { id: data.id, email: data.email };
+  if (!data) return null;
+  const profile = data[0];
+  if (profile) return { id: profile.id, email: profile.email };
 }
 
-export async function getProfileByEmail(email?: string) {
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("email, id")
-    .eq("email", email)
-    .single();
+export async function getProfileByEmail(email: string) {
+  const data = await db
+    .select({ email: profiles_table.email, id: profiles_table.id })
+    .from(profiles_table)
+    .where(eq(profiles_table.email, email));
 
-  if (error) return null;
-  if (data) return data;
+  if (data?.[0]) return data[0];
+  return null;
 }
 
 export async function verifyLogin(email: string, password: string) {
-  const { user, error } = await supabase.auth.signIn({
-    email,
-    password,
-  });
+  const data = await db
+    .select()
+    .from(profiles_table)
+    .where(
+      and(
+        eq(profiles_table.email, email),
+        eq(profiles_table.password, password)
+      )
+    )
+    .limit(1);
+  if (!data) return undefined;
 
-  if (error) return undefined;
-  const profile = await getProfileByEmail(user?.email);
-
-  return profile;
+  return data[0];
 }

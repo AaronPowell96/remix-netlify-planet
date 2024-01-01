@@ -1,18 +1,16 @@
+import { db } from "~/db";
 import type { User } from "./user.server";
-import { supabase } from "./user.server";
-
-export type Note = {
-  id: string;
-  title: string;
-  body: string;
-  profile_id: string;
-};
+import { notes_table } from "~/db/schema";
+import { and, eq } from "drizzle-orm";
+import type { Note } from "~/db/types";
+import { v4 as uuid } from "uuid";
+import invariant from "tiny-invariant";
 
 export async function getNoteListItems({ userId }: { userId: User["id"] }) {
-  const { data } = await supabase
-    .from("notes")
-    .select("id, title")
-    .eq("profile_id", userId);
+  const data = await db
+    .select({ id: notes_table.id, title: notes_table.title })
+    .from(notes_table)
+    .where(eq(notes_table.profileId, userId));
 
   return data;
 }
@@ -22,28 +20,26 @@ export async function createNote({
   body,
   userId,
 }: Pick<Note, "body" | "title"> & { userId: User["id"] }) {
-  const { data, error } = await supabase
-    .from("notes")
-    .insert([{ title, body, profile_id: userId }])
-    .single();
+  const id = uuid();
+  await db.insert(notes_table).values({ id, title, body, profileId: userId });
 
-  if (!error) {
-    return data;
-  }
-
-  return null;
+  const newNote = await getNote({
+    id,
+    userId,
+  });
+  invariant(newNote, "newNote should exist");
+  return newNote;
 }
 
 export async function deleteNote({
   id,
   userId,
 }: Pick<Note, "id"> & { userId: User["id"] }) {
-  const { error } = await supabase
-    .from("notes")
-    .delete({ returning: "minimal" })
-    .match({ id, profile_id: userId });
+  const data = await db
+    .delete(notes_table)
+    .where(and(eq(notes_table.id, id), eq(notes_table.profileId, userId)));
 
-  if (!error) {
+  if (data) {
     return {};
   }
 
@@ -54,20 +50,14 @@ export async function getNote({
   id,
   userId,
 }: Pick<Note, "id"> & { userId: User["id"] }) {
-  const { data, error } = await supabase
-    .from("notes")
-    .select("*")
-    .eq("profile_id", userId)
-    .eq("id", id)
-    .single();
-
-  if (!error) {
-    return {
-      userId: data.profile_id,
-      id: data.id,
-      title: data.title,
-      body: data.body,
-    };
+  const data = await db
+    .select()
+    .from(notes_table)
+    .where(and(eq(notes_table.profileId, userId), eq(notes_table.id, id)))
+    .limit(1);
+  const note = data[0];
+  if (note) {
+    return note;
   }
 
   return null;

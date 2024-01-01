@@ -1,8 +1,4 @@
-import type {
-  ActionFunction,
-  LoaderArgs,
-  MetaFunction,
-} from "@remix-run/node";
+import type { ActionFunction, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import { createUserSession, getUserId } from "~/session.server";
@@ -27,7 +23,7 @@ export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
   return json({});
-};
+}
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -62,6 +58,7 @@ export const action: ActionFunction = async ({ request }) => {
   // A user could potentially already exist within our system
   // and we should communicate that well
   const existingUser = await getProfileByEmail(email);
+  console.log({ existingUser });
   if (existingUser) {
     return json<ActionData>(
       { errors: { email: "A user already exists with this email." } },
@@ -145,7 +142,7 @@ export default function Join() {
             />
           </div>
           <button
-            className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+            className="w-full rounded bg-blue-500  px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
             type="submit"
           >
             Create Account
