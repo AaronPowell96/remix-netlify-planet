@@ -1,6 +1,6 @@
-# Remix K-pop Stack
+# Remix Pop Punk Stack
 
-![k-pop site image](https://res.cloudinary.com/dzkoxrsdj/image/upload/v1648844684/CleanShot_2022-04-01_at_16.23.40_2x_oo3ppe.jpg)
+![Pop Punk site image](https://res.cloudinary.com/dzkoxrsdj/image/upload/v1648844684/CleanShot_2022-04-01_at_16.23.40_2x_oo3ppe.jpg)
 
 Deployed Site: [kpop-stack.netlify.app](https://kpop-stack.netlify.app)
 
@@ -160,7 +160,7 @@ You can add your environment variables to an `.env` file (like shown in the samp
 
   ![CleanShot 2022-03-31 at 11 59 29](https://user-images.githubusercontent.com/8431042/161098865-7c790cbc-db76-45b3-aa75-270af70038ae.png)
 
-- Here are the SQL queries used in the K-pop Stack
+- Here are the SQL queries used in the Pop Punk Stack
 
   ```sql
   -- Create public profile table that references our auth.user

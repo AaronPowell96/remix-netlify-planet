@@ -11,15 +11,15 @@ export default function Index() {
             <div className="absolute inset-0">
               <img
                 className="h-full w-full object-cover"
-                src="https://user-images.githubusercontent.com/8431042/161311608-f5d43ab2-85b4-40c5-9dea-065985e5adf5.jpeg"
-                alt="BTS playing on stage with the group leaving in action poses"
+                src="https://github.com/AaronPowell96/remix-netlify-planet/assets/17838632/b1c32dc5-52c4-4114-8074-d2cba466334c"
+                alt="Green Day playing on stage with billy at the front on guitar"
               />
               <div className="absolute inset-0 bg-[color:rgba(139,92,246,0.5)] mix-blend-multiply" />
             </div>
-            <div className="lg:pb-18 relative px-4 pt-16 pb-8 sm:px-6 sm:pt-24 sm:pb-14 lg:px-8 lg:pt-32">
+            <div className="lg:pb-18 relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pt-32">
               <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
                 <span className="block uppercase text-violet-500 drop-shadow-md">
-                  K-Pop Stack
+                  Pop Punk Stack
                 </span>
               </h1>
               <p className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
@@ -62,7 +62,7 @@ export default function Index() {
           </div>
         </div>
 
-        <div className="mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
           <div className="mt-6 flex flex-wrap justify-center gap-8">
             {[
               {
@@ -71,9 +71,9 @@ export default function Index() {
                 href: "https://netlify.com",
               },
               {
-                src: "https://user-images.githubusercontent.com/8431042/158711352-746c52cf-433e-4823-987a-c9d6f4349ce7.svg",
-                alt: "Supabase",
-                href: "https://supabase.com",
+                src: "https://github.com/AaronPowell96/remix-netlify-planet/assets/17838632/09c1eece-4e8f-4abd-a129-b8c148cbe35f",
+                alt: "PlanetScale",
+                href: "https://planetscale.com/",
               },
               {
                 src: "https://user-images.githubusercontent.com/1500684/157764276-a516a239-e377-4a20-b44a-0ac7b65c8c14.svg",
@@ -81,9 +81,9 @@ export default function Index() {
                 href: "https://tailwindcss.com",
               },
               {
-                src: "https://user-images.githubusercontent.com/1500684/157764454-48ac8c71-a2a9-4b5e-b19c-edef8b8953d6.svg",
-                alt: "Cypress",
-                href: "https://www.cypress.io",
+                src: "https://github.com/AaronPowell96/remix-netlify-planet/assets/17838632/5609f24b-c8e5-4cea-8e4c-656f51cca8c5",
+                alt: "Drizzle ORM",
+                href: "https://orm.drizzle.team/",
               },
               {
                 src: "https://user-images.githubusercontent.com/1500684/157772662-92b0dd3a-453f-4d18-b8be-9fa6efde52cf.png",

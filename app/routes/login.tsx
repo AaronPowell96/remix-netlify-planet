@@ -1,5 +1,9 @@
 import React from "react";
-import type { ActionFunction, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type {
+  ActionFunction,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import { createUserSession, getUserId } from "~/session.server";
@@ -7,9 +11,11 @@ import { validateEmail } from "~/utils";
 import { verifyLogin } from "~/models/user.server";
 
 export const meta: MetaFunction = () => {
-  return {
-    title: "Login",
-  };
+  return [
+    {
+      title: "Login",
+    },
+  ];
 };
 
 interface ActionData {
@@ -19,7 +25,7 @@ interface ActionData {
   };
 }
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
   return json({});

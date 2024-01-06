@@ -4,6 +4,7 @@ import type { User } from "./models/user.server";
 
 export function useMatchesData(id: string) {
   const matchingRoutes = useMatches();
+  console.log("matchingRoutes", matchingRoutes);
   const route = useMemo(
     () => matchingRoutes.find((route) => route.id === id),
     [matchingRoutes, id]
@@ -17,7 +18,7 @@ export function isUser(user: User) {
 }
 
 export function useOptionalUser() {
-  const data = useMatchesData("root");
+  const data = useMatchesData("root") as any;
   if (!data || !isUser(data.user)) {
     return undefined;
   }
